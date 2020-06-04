@@ -1,0 +1,29 @@
+
+If(cbUserAD.Selected.DisplayName = Blank();
+
+Notify("Select any user and role";NotificationType.Information);
+/* Role is other combobox to list from SharePoint Online */
+If(LookUp(collectTeams;Approver.DisplayName = cbUserAD.Selected.DisplayName && IDRol.Id = drpRolUser.Selected.ID;true);
+
+Notify("User exist";NotificationType.Information);
+
+Patch(collectTeams;Defaults(collectTeams);
+    {   
+        IDRol:{'@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference";
+        Id:drpRolUser.Selected.ID;
+        Value: drpRolUser.Selected.Title
+        };
+        Approver:{
+            '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser";
+            Claims: "i:0#.f|membership|"&cbUserAD.Selected.Mail;
+            DisplayName:cbUserAD.Selected.DisplayName;
+            Department:cbUserAD.Selected.Department;
+            Email:cbUserAD.Selected.Mail;
+            JobTitle:cbUserAD.Selected.JobTitle;
+            Picture:UsuariosdeOffice365.UserPhotoV2(cbUserAD.Selected.Mail)
+        };
+        Estado:{'@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference";
+          Value: "Pending"
+        }         
+    }
+)
