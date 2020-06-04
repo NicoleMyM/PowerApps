@@ -1,2 +1,2 @@
-/* cbUserAD is the name combobox */
+/* cbUserAD is the name combobox. This text in the Items from cbUserAD */
 UsersOffice365.SearchUser({searchTerm:cbUserAD.SearchText})
