@@ -1,0 +1,44 @@
+/* Create list "approver" in SharePoint Online and connect with PowerApps */
+/* Create Flow asociated to "approver" list. Execute when the list haved changes. Use states Pending - Request - Approved  */
+/* cbUserAD is the name combobox. This text in the OnSelect from Send Button */
+
+IfError(
+    //Records corresponding to the collection ID are removed
+        ForAll(collectTeamsRemove;Remove(approver;Filter(approver;ID=IDRemove);All));;Refresh(approver);;
+
+    //If the record is new it is saved
+        ForAll(collectTeams;If(ID = Blank();
+        Patch(approver;Defaults(approver);{ 
+            IDRol:{'@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedReference";
+                Id:IDRol.Id;
+                Value: IDRol.Value
+            };
+            Approver:{
+                '@odata.type': "#Microsoft.Azure.Connectors.SharePoint.SPListExpandedUser";
+                Claims:Approver.Claims;
+                DisplayName:Approver.DisplayName;
+                Department:Approver.Department;
+                Email:Approver.Email;
+                JobTitle:Approver.JobTitle;
+                Picture:Approver.Picture
+            }                      
+        })));;
+        
+        Navigate(OtherGallery;ScreenTransition.CoverRight);;
+;
+Notify(
+        "An error occurred while trying to submit the request";
+        NotificationType.Error
+    );
+Notify(
+        "Request send";
+        NotificationType.Success
+    )
+);;
+Refresh(aprobadores);;
+//Delete records from the list
+Collect(collectTeamsRemove;{ IDRemove: 0 });;
+Clear(collectTeamsRemove);;
+Clear(collectTeams);;
+//For example (in case it's a form that has multiple approvers include ID of that form in the list)
+Collect(collectTeams;Filter(approver; ID = OtherGallery.Selected.ID));;
