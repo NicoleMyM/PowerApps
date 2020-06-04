@@ -1,3 +1,4 @@
+/* cbUserAD is the name combobox. This text in the OnSelect from Add Button */
 
 If(cbUserAD.Selected.DisplayName = Blank();
 
