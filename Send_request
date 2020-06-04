@@ -35,7 +35,7 @@ Notify(
         NotificationType.Success
     )
 );;
-Refresh(aprobadores);;
+Refresh(approver);;
 //Delete records from the list
 Collect(collectTeamsRemove;{ IDRemove: 0 });;
 Clear(collectTeamsRemove);;
