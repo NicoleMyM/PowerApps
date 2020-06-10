@@ -2,6 +2,7 @@
 /* Create Flow asociated to "approver" list. Execute when the list haved changes. Use states Pending - Request - Approved  */
 /* cbUserAD is the name combobox. This text in the OnSelect from Send Button */
 
+If(CountRows(collectTeams)>0;
 IfError(
     //Records corresponding to the collection ID are removed
         ForAll(collectTeamsRemove;Remove(approver;Filter(approver;ID=IDRemove);All));;Refresh(approver);;
@@ -35,6 +36,8 @@ Notify(
         NotificationType.Success
     )
 );;
+;Notify("You must enter the people in charge of accepting the document";NotificationType.Information));;
+
 Refresh(approver);;
 //Delete records from the list
 Collect(collectTeamsRemove;{ IDRemove: 0 });;
